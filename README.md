@@ -42,7 +42,7 @@ Use the dropdown or paste any relative GLB path (for example `3D Models/1999 RQ3
    git pull source-github main  # if the GitHub default branch differs, replace "main"
    git push origin main
    ```
-3. Once pushed, the Space automatically serves `index.html` with no extra build steps.
+3. Once pushed, the Space automatically serves `index.html` with no extra build steps. The included `huggingface.yaml` pins the static SDK settings so the viewer runs without further configuration.
 
 ## Contributors
 
