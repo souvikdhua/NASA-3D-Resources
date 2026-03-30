@@ -7,6 +7,17 @@ Please read the [usage guidelines][usage]. NASA [intranet interface][webinterfac
 
 We welcome feedback and comments. Tell us how you're using our models and let us know what you think: arc-special-proj@lists.nasa.gov
 
+## Quick start (local viewer)
+
+Run a simple static server from the repository root and open the included viewer:
+
+```bash
+python3 -m http.server 8080
+# then open http://localhost:8080/index.html
+```
+
+Use the dropdown or paste any relative GLB path (for example `3D Models/1999 RQ36 asteroid/1999 RQ36 asteroid.glb`) to inspect models with the built-in WebGL viewer.
+
 ## Contributors
 
 We thank the many authors who have contributed to the 3D Resources collections.
