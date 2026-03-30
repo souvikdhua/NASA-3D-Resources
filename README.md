@@ -1,3 +1,14 @@
+---
+title: NASA 3D Resources Viewer
+emoji: "🚀"
+colorFrom: indigo
+colorTo: cyan
+sdk: static
+app_file: index.html
+pinned: false
+license: other
+---
+
 NASA-3D-Resources
 =================
 
@@ -6,6 +17,32 @@ Welcome to the 3D Resources github site. This is a growing collection of 3D mode
 Please read the [usage guidelines][usage]. NASA [intranet interface][webinterface] for these resources.
 
 We welcome feedback and comments. Tell us how you're using our models and let us know what you think: arc-special-proj@lists.nasa.gov
+
+## Quick start (local viewer)
+
+Run a simple static server from the repository root and open the included viewer:
+
+```bash
+python3 -m http.server 8080
+# then open http://localhost:8080/index.html
+```
+
+Use the dropdown or paste any relative GLB path (for example `3D Models/1999 RQ36 asteroid/1999 RQ36 asteroid.glb`) to inspect models with the built-in WebGL viewer.
+
+## Deploy to Hugging Face Spaces (static)
+
+1. Create a new Space set to **Static**. Example: `huggingface-cli repo create nasa-3d-resources-viewer --space --sdk=static`
+   - If you have not authenticated locally: `huggingface-cli login --token <your-hf-token>`
+2. Push this repository to that Space (replace `<your-hf-username>` as needed):
+   ```bash
+   git clone https://huggingface.co/spaces/<your-hf-username>/nasa-3d-resources-viewer
+   cd nasa-3d-resources-viewer
+   # origin already points to your HF Space; add the GitHub repo as a source remote
+   git remote add source-github https://github.com/souvikdhua/NASA-3D-Resources.git
+   git pull source-github main  # if the GitHub default branch differs, replace "main"
+   git push origin main
+   ```
+3. Once pushed, the Space automatically serves `index.html` with no extra build steps. The included `huggingface.yaml` pins the static SDK settings so the viewer runs without further configuration.
 
 ## Contributors
 

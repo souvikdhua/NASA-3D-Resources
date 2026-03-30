@@ -1,0 +1,8 @@
+title: NASA 3D Resources Viewer
+emoji: "🚀"
+colorFrom: indigo
+colorTo: cyan
+sdk: static
+app_file: index.html
+pinned: false
+license: other

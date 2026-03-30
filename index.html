@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NASA 3D Resources – Quick Viewer</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer@3.4.0/dist/model-viewer.min.js"></script>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #000;
+      --fg: #fff;
+      --accent: #00ffff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      min-height: 100vh;
+    }
+    aside {
+      border-right: 1px solid var(--fg);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    h1 { margin: 0; font-size: 20px; letter-spacing: 0.04em; text-transform: uppercase; }
+    .hint {
+      font-size: 12px;
+      color: #d0d0d0;
+      line-height: 1.5;
+    }
+    label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; }
+    select, input, button {
+      width: 100%;
+      padding: 8px 10px;
+      background: #111;
+      color: var(--fg);
+      border: 1px solid var(--fg);
+      border-radius: 0;
+      font-size: 14px;
+    }
+    button {
+      cursor: pointer;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: var(--fg);
+      color: var(--bg);
+    }
+    button:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+    main { position: relative; overflow: hidden; }
+    model-viewer {
+      width: 100%;
+      height: 100vh;
+      background: radial-gradient(circle at 20% 20%, #0a0a0a, #000 50%);
+      border: none;
+    }
+    footer {
+      font-size: 11px;
+      color: #b0b0b0;
+      margin-top: auto;
+      line-height: 1.4;
+    }
+    .row { display: flex; flex-direction: column; gap: 6px; }
+  </style>
+</head>
+<body>
+  <aside>
+    <h1>NASA 3D Quick Viewer</h1>
+    <p class="hint">
+      Use the dropdown to load any included GLB model. If a model fails to load, ensure you are serving
+      the repository via a local web server (file:// will block some assets). Suggested: <code>python3 -m http.server 8080</code>.
+    </p>
+
+    <div class="row">
+      <label for="modelSelect">Select a model</label>
+      <select id="modelSelect"></select>
+    </div>
+
+    <div class="row">
+      <label for="customPath">Or paste a relative GLB path</label>
+      <input id="customPath" type="text" placeholder="3D Models/1999 RQ36 asteroid/1999 RQ36 asteroid.glb" />
+      <button id="loadCustom">Load Path</button>
+    </div>
+
+    <footer>
+      Built with <code>&lt;model-viewer&gt;</code>. Assets: NASA 3D Resources (GLB, JPG). Accent: cyan, brutalist layout.
+    </footer>
+  </aside>
+
+  <main>
+    <model-viewer id="viewer" src="" auto-rotate camera-controls shadow-intensity="0.2" exposure="1.1" ar ar-modes="webxr scene-viewer quick-look" disable-zoom></model-viewer>
+  </main>
+
+  <script type="module">
+    const models = [
+      "3D Models/1999 RQ36 asteroid/1999 RQ36 asteroid.glb",
+      "3D Models/70-meter Dish/70 meter dish.glb",
+      "3D Models/Apollo Lunar Module/Apollo Lunar Module.glb",
+      "3D Models/Argo/Argo.glb",
+      "3D Models/Astronaut/Astronaut.glb",
+      "3D Models/Chandra X-ray Observatory/Chandra X-ray Observatory.glb",
+      "3D Models/Cassini-Huygens (A)/Cassini-Huygens (A).glb",
+      "3D Models/James Webb Space Telescope (A)/James Webb Space Telescope (A).glb",
+      "3D Models/Ingenuity Mars Helicopter/Ingenuity Mars Helicopter.glb",
+      "3D Models/International Space Station (ISS) (A)/International Space Station (ISS) (A).glb",
+      "3D Models/Juno (A)/Juno (A).glb",
+      "3D Models/Mars 2020 Perseverance Rover/Mars 2020 Perseverance Rover.glb",
+      "3D Models/Mars Reconnaissance Orbiter (MRO) (C)/Mars Reconnaissance Orbiter (MRO) (C).glb",
+      "3D Models/Nancy Grace Roman Space Telescope (A)/Nancy Grace Roman Space Telescope (A).glb",
+      "3D Models/Parker Solar Probe/Parker Solar Probe.glb",
+      "3D Models/Regolith Advanced Surface Systems Operations Robot (RASSOR)/Regolith Advanced Surface Systems Operations Robot (RASSOR).glb",
+      "3D Models/Robonaut 2/Robonaut 2.glb",
+      "3D Models/Saturn V/Saturn V.glb",
+      "3D Models/Space Shuttle (D)/Space Shuttle (D).glb",
+      "3D Models/Spitzer Space Telescope/Spitzer Space Telescope.glb",
+      "3D Models/Station Explorer for X-Ray Timing and Navigation (SEXTANT)/Station Explorer for X-Ray Timing and Navigation (SEXTANT).glb",
+      "3D Models/Stardust/Stardust.glb",
+      "3D Models/Transiting Exoplanet Survey Satellite (TESS) (A)/Transiting Exoplanet Survey Satellite (TESS) (A).glb",
+      "3D Models/Voyager Probe (A)/Voyager Probe (A).glb",
+      "3D Models/Wide-Field Infrared Explorer (WIRE)/Wide-Field Infrared Explorer (WIRE).glb",
+      "3D Models/Wilkinson Microwave Anisotropy Probe (WMAP)/Wilkinson Microwave Anisotropy Probe (WMAP).glb"
+    ];
+
+    const select = document.getElementById("modelSelect");
+    const viewer = document.getElementById("viewer");
+    const customPath = document.getElementById("customPath");
+    const loadCustom = document.getElementById("loadCustom");
+
+    function populate() {
+      models.forEach(path => {
+        const opt = document.createElement("option");
+        opt.value = path;
+        opt.textContent = path.replace("3D Models/", "");
+        select.appendChild(opt);
+      });
+      // initial load
+      if (models.length) {
+        select.value = models[0];
+        viewer.src = models[0];
+      }
+    }
+
+    function loadPath(path) {
+      if (!path) return;
+      viewer.src = path;
+      viewer.poster = "";
+    }
+
+    select.addEventListener("change", () => loadPath(select.value));
+    loadCustom.addEventListener("click", () => loadPath(customPath.value.trim()));
+    customPath.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        loadPath(customPath.value.trim());
+      }
+    });
+
+    populate();
+  </script>
+</body>
+</html>
