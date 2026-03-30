@@ -31,18 +31,17 @@ Use the dropdown or paste any relative GLB path (for example `3D Models/1999 RQ3
 
 ## Deploy to Hugging Face Spaces (static)
 
-1. Create a new Space set to **Static**. Example: `huggingface-cli repo create nasa-3d-resources-viewer --type=space --sdk=static`
+1. Create a new Space set to **Static**. Example: `huggingface-cli repo create nasa-3d-resources-viewer --space --sdk=static`
    - If you have not authenticated locally: `huggingface-cli login --token <your-hf-token>`
 2. Push this repository to that Space (replace `<your-hf-username>` as needed):
    ```bash
    git clone https://huggingface.co/spaces/<your-hf-username>/nasa-3d-resources-viewer
    cd nasa-3d-resources-viewer
-   # add this repo as a remote and pull its contents
-   git remote add origin-github https://github.com/souvikdhua/NASA-3D-Resources.git
-   git pull origin-github main  # if your branch differs, replace "main" accordingly
+   # origin already points to your HF Space; add the GitHub repo as a source remote
+   git remote add source-github https://github.com/souvikdhua/NASA-3D-Resources.git
+   git pull source-github main  # if the GitHub default branch differs, replace "main"
    git push origin main
    ```
-   (If the Space uses `main` instead of `master`, adjust accordingly.)
 3. Once pushed, the Space automatically serves `index.html` with no extra build steps.
 
 ## Contributors
